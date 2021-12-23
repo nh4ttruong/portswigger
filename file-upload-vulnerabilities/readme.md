@@ -22,7 +22,18 @@ Trong thực tế, các công ty, tổ chức thường kiểm soát rất tốt
 
 Sau đây sẽ là phần thực hành khai thác các lỗ hổng liên quan đến File upload vulnerabilities
 
-### [Lab: Remote code execution via web shell upload](https://portswigger.net/web-security/file-upload/lab-file-upload-remote-code-execution-via-web-shell-upload)
+Xem nhanh các phần:
+- [Lab: Remote code execution via web shell upload](#RCE)
+- [Lab: Web shell upload via Content-Type restriction bypass](#content-type)
+- [Lab: Web shell upload via path traversal](#path-traversal)
+- [Lab: Web shell upload via extension blacklist bypass](#extension-blacklist)
+- [Lab: Web shell upload via obfuscated file extension](#obfuscated)
+- [Lab: Remote code execution via polyglot web shell upload](#polygot)
+- [Lab: Web shell upload via race condition](#race-condition)
+
+Let's started!
+
+### [Lab: Remote code execution via web shell upload](https://portswigger.net/web-security/file-upload/lab-file-upload-remote-code-execution-via-web-shell-upload)<a name="RCE"></a>
 
 ![Lab RCE basic](RCE-webshell-upload/lab.jpg)
 
@@ -63,7 +74,7 @@ Submit bài lab với string vừa tiềm được thì ta đã thành công th�
 
 ![Tải RCE lên hệ thống](RCE-webshell-upload/solved.jpg)
 
-### [Lab: Web shell upload via Content-Type restriction bypass](https://portswigger.net/web-security/file-upload/lab-file-upload-web-shell-upload-via-content-type-restriction-bypass)
+### [Lab: Web shell upload via Content-Type restriction bypass](https://portswigger.net/web-security/file-upload/lab-file-upload-web-shell-upload-via-content-type-restriction-bypass)<a name="content-type"></a>
 Với website, khi ta gửi một HTML form lên hệ thống, trình duyệt sẽ gửi đi một yêu cầu POST trong đó chức các thông tin của yêu cầu đó. Thông thường, các trình duyệt gửi đi các yêu cầu với thuộc tính Content-Type là `application/x-www-form-url-encoded`.
 
 Đối với các hệ thống khác nhau, Content-Type được sử dụng các giá trị khác nhau để phù hợp nhất. Bài lab này sẽ yêu cầu ta thực hiện khai thác đánh lừa hệ thống để gửi lên web server một RCE code.
@@ -92,7 +103,7 @@ Kết quả là chúng ta đã thực hiện khai thác lỗ hổng file upload 
 
 ![Thử tải RCE code](contenttype-restrictions-bypass/solved.jpg)
 
-### [Lab: Web shell upload via path traversal](https://portswigger.net/web-security/file-upload/lab-file-upload-web-shell-upload-via-path-traversal)
+### [Lab: Web shell upload via path traversal](https://portswigger.net/web-security/file-upload/lab-file-upload-web-shell-upload-via-path-traversal)<a name="path-traversal"></a>
 Một trong những cách các website đối phó với lỗ hổng upload file đó chính là chỉ cho phép server thực thi các tệp được cho phép. Nếu các extension của file không nằm trong cấu hình của server, server có thể trả về các thông báo lỗi hoặc nội dung với **Content-Type: text/plain**.
 
 Điều này vô hình chung có thể dẫn đến attacker lợi dụng để soi source code từ server hoặc các tệp riêng tư của server.
@@ -123,7 +134,7 @@ Và submit để hoàn thành bài lab này
 
 ![Submit](path-traversal/solved.jpg)
 
-### [Lab: Web shell upload via extension blacklist bypass](https://portswigger.net/web-security/file-upload/lab-file-upload-web-shell-upload-via-extension-blacklist-bypass)
+### [Lab: Web shell upload via extension blacklist bypass](https://portswigger.net/web-security/file-upload/lab-file-upload-web-shell-upload-via-extension-blacklist-bypass)<a name="extension-blacklist"></a>
 Trong các phần trên, mình đã có đề cập đến việc sử dụng blacklist để block các loại tệp nguy hiểm. Tuy vậy, các web server vẫn có thể mắc phải các lỗi như cấu hình thiếu chặt chẽ, quản lý file hời hợt khiến attacker có thể dễ dàng "ghi đè" lên tệp cấu hình của server hoặc bypass được blacklist.
 
 Với Apache, server có thể thực thi một tệp PHP theo request và ông dev ổng có thể thêm những cấu hình như cho phép load module nào hoặc thêm các file extension nào lên tệp config (apache2.conf). Bên cạnh đó, nhiều server còn cho phép ông dev upload ghi đè tệp hoặc thêm content vào tệp config. Ví dụ như trong Apache server, nó cho phép load lên một tệp cấu hình cụ thể cho server nếu như trên apache server tồn tại tệp `.htaccess`. Nói vậy thôi, thực tế thì trước khi ta có thể upload một webshell lên hệ thống thì phải trải qua 7749 bước ngăn chặn của server nữa =))))
@@ -152,7 +163,7 @@ Và submit bí mật của chú ấy thôi:
 
 ![Submit](blaclist-bypass/solved.jpg)
 
-### [Lab: Web shell upload via obfuscated file extension](https://portswigger.net/web-security/file-upload/lab-file-upload-web-shell-upload-via-obfuscated-file-extension)
+### [Lab: Web shell upload via obfuscated file extension](https://portswigger.net/web-security/file-upload/lab-file-upload-web-shell-upload-via-obfuscated-file-extension)<a name="obfuscated"></a>
 Ở bài lab này, tác giả sẽ yêu cầu ta bypass blacklist các extension của file.
 
 Thử upload 1.php như các lab khác lên server:
@@ -171,7 +182,7 @@ Như đã thấy, file 1.php đã upload thành công lên server. Và tương t
 
 ![Submit](obfuscated-extensions/solved.jpg)
 
-### [Flawed validation of the file's contents](https://portswigger.net/web-security/file-upload/lab-file-upload-remote-code-execution-via-polyglot-web-shell-upload)
+### [Lab: Remote code execution via polyglot web shell upload](https://portswigger.net/web-security/file-upload/lab-file-upload-remote-code-execution-via-polyglot-web-shell-upload)<a name="polygot"></a>
 Để tăng mức độ bảo mật cho hệ thống, các server thay vì xác thức Content-Type thì nó sẽ xác thực nội dung của file. Ví dụ, các file hình ảnh JPEG luôn bắt đầu bằng chuỗi bytes `FF D8 FF`.
 
 Bài lab này sẽ thử thách ta bypass mà không thể thay đổi extension của file:
@@ -200,7 +211,7 @@ Và submit bí mật:
 
 ![Submit](polygot-webshell/solved.jpg)
 
-### [Exploiting file upload race conditions](https://portswigger.net/web-security/file-upload/lab-file-upload-web-shell-upload-via-race-condition)
+### [Lab: Web shell upload via race condition](https://portswigger.net/web-security/file-upload/lab-file-upload-web-shell-upload-via-race-condition)<a name="race-condition"></a>
 Race conditions trong khai thác lỗ hổng file upload là trường hợp xảy ra cho phép bạn có thể upload một file thông qua URL. Server sẽ fetch file của bạn và tạo một bản copy cục bộ trước khi nó bị xác thực.
 
 Ngày nay, các hệ thống càng ngày càng thay đổi để có thể ngăn chặn các cuộc tấn công file upload. Họ sử dụng một nơi lưu trữ tạm thời để lưu trữ tệp, sau đó thay đổi tên ngẫu nhiên tên của tệp và bắt đầu xác thực nó. Tệp nào độc hại thì loại bỏ tệp nào ổn thì sẽ cho phép upload vào nơi lưu trữ gốc. Điều này dường như bất khả thi để dò ra nó tên gì để attacker thực thi nó nếu may mắn vượt qua vòng xác thực.
