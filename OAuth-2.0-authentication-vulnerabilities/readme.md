@@ -46,7 +46,10 @@ Tổng quan mà nói thì nó sẽ hoạt động chủ yếu theo 4 giai đoạ
 
 Truy cập nhanh từng lab tại đây:
 - [Lab: Authentication bypass via OAuth implicit flow](#implicit-flow)
-
+- [Lab: Forced OAuth profile linking](#oauth-profile-linking)
+- [Lab: OAuth account hijacking via redirect_uri](#OAuth-hijacking)
+- [Lab: Stealing OAuth access tokens via an open redirect](#stealing-redirect)
+- [Lab: Stealing OAuth access tokens via a proxy page](#stealing-proxy)
 
 ### Lab: Authentication bypass via OAuth implicit <a name="implicit-flow"></a>
 
