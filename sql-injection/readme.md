@@ -227,7 +227,7 @@ Trong các bảng, có 2 bảng có thể chứa thông tin tài khoản của c
 
 Có tài khoản xong thì login và solved:
 
-![Solved](slqi-examining-database/solve-listing-database.jpg)
+![Solved](slqi-examining-database/solved-listing-database.jpg)
 
 ### Lab: SQL injection attack, listing the database contents on Oracle <a name="listing-oracle"></a>
 
@@ -269,7 +269,7 @@ Bài lab này được thiết kế để ta attack bằng phương pháp Blind 
 
 Mở Burp lên và kiểm tra request khi filter category thì mình sẽ thấy một tham số là TrackingId.
 
-![TrackingId trong request](blind-conditional-res/blind-sqli/tracking-id.jpg)
+![TrackingId trong request](blind-sqli/blind-conditional-res/tracking-id.jpg)
 
 Bây giờ, mình sẽ thử test điều kiền khi lồng toán tử vào chỗ này:
 
