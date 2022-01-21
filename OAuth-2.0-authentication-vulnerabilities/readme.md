@@ -156,15 +156,15 @@ Sau khi send request, ta tiếp tục Follow Redirect thì nhận được một
 
 Tương tự, ta sẽ sử dụng Exploit Server để tiến hành exploit challenge. Mình sẽ send một request đến **/exploit** với body là một iframe:
 
-![Exploit with iframe](exploit/lab.jpg)
+![Exploit with iframe](OAuth-hijacking/exploit.jpg)
 
 Sau khi Store và Deliver Code đến nạn nhân, kiểm tra Access log thì ta có được một request với leak-code:
 
-![Leaked Code](leaked-code/lab.jpg)
+![Leaked Code](OAuth-hijacking/leaked-code.jpg)
 
 Sử dụng browser để truy cập đến URL đó, ta sẽ vào được Admin Panel:
 
-![Open Leaked Code URL](OAuth-hijacking/openleakedcode.jpg)
+![Open Leaked Code URL](OAuth-hijacking/openleakcode.jpg)
 
 ![Admin Panel](OAuth-hijacking/gotoadmin.jpg)
 
@@ -218,7 +218,7 @@ Bài này cũng khá giống với bài bên trên, audit website thì ta có th
 
 Đến đây, sau khi tham khảo payload, mình đã thử sử dụng payload như sau:
 
-![Test comment](OAuth-stealing-proxy/payload.jpg)
+![Payload](OAuth-stealing-proxy/payload.jpg)
 
 Store và View Exploit thì thấy ta đã có một iframe comment như lab:
 
