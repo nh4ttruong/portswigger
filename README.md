@@ -3,6 +3,7 @@ Nơi rèn luyện kiến thức Web Security của mình 😅
 
 ## LAB
 - [SQL Injection](sql-injection/readme.md)
+- [Cross-site scripting (XSS)](sql-injection/readme.md)
 - [File upload vulnerabilities](file-upload-vulnerabilities/readme.md)
 - [OAuth-2.0-authentication-vulnerabilities](OAuth-2.0-authentication-vulnerabilities/readme.md)
 
