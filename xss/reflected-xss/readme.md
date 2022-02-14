@@ -14,7 +14,7 @@ Mình sẽ ghi chú lại những bài LAB về chủ đề *Reflected XSS* tạ
 - [Reflected XSS bằng thẻ link](#canonical-link-tag)
 - [Reflected Javascript single quote và blackslash escaped bypass](#js-single-quote)
 - [Reflected Javascript mã hóa dấu ngoặc nhọn](#js-angle-brackets)
-- [Reflected JavaScript mã hóa dấu ngoặc nhọn, dấu nháy kép và escaped dấu nháy đơn](#js-block-angle-brackets-double-quotes-single-quote-escaped")
+- [Reflected JavaScript mã hóa dấu ngoặc nhọn, dấu nháy kép và escaped dấu nháy đơn](#js-block-angle-brackets-double-quotes-single-quote-escaped)
 
 ### Lab: Reflected XSS into HTML context with nothing encoded <a name="html-context-nothing-encoded"></a>
 
