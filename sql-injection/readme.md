@@ -1,129 +1,66 @@
-# SQL Injection# SQL Injection
+# SQL Injection
 
+## Đôi nét về SQL Injection (SQLi)?
 
+SQLi là một lỗ hổng trên web mà attacker sẽ có thể tạo ra những query đến database của website đó. Lỗ hổng này sẽ làm những dữ liệu mà khó có thể xem được một cách bình thường trở nên bị leak.
 
-## Đôi nét về SQL Injection (SQLi)?## Đôi nét về SQL Injection (SQLi)?
+Lỗ hổng này khá rộng. Nó có thể ảnh hưởng trực tiếp đến user data và cả web database nếu attack muốn (có thể thêm, xóa, sửa,...)
 
+Nếu attacker có thể khai thác được SQLi thì có thể dẫn đến nhiều hệ lụy khôn lường. Ví dụ như dữ liệu bị lộ (tài khoản người dùng, thông tin cá nhân,...). Điều này trở nên hết sức phức tạp vì sẽ liên quan đến nhiều khía cạnh bảo mật trên môi trường Internet.
 
+## Các tác động của SQLi
 
-SQLi là một lỗ hổng trên web mà attacker sẽ có thể tạo ra những query đến database của website đó. Lỗ hổng này sẽ làm những dữ liệu mà khó có thể xem được một cách bình thường trở nên bị leak.SQLi là một lỗ hổng trên web mà attacker sẽ có thể tạo ra những query đến database của website đó. Lỗ hổng này sẽ làm những dữ liệu mà khó có thể xem được một cách bình thường trở nên bị leak.
-
-
-
-Lỗ hổng này khá rộng. Nó có thể ảnh hưởng trực tiếp đến user data và cả web database nếu attack muốn (có thể thêm, xóa, sửa,...)Lỗ hổng này khá rộng. Nó có thể ảnh hưởng trực tiếp đến user data và cả web database nếu attack muốn (có thể thêm, xóa, sửa,...)
-
-
-
-Nếu attacker có thể khai thác được SQLi thì có thể dẫn đến nhiều hệ lụy khôn lường. Ví dụ như dữ liệu bị lộ (tài khoản người dùng, thông tin cá nhân,...). Điều này trở nên hết sức phức tạp vì sẽ liên quan đến nhiều khía cạnh bảo mật trên môi trường Internet.Nếu attacker có thể khai thác được SQLi thì có thể dẫn đến nhiều hệ lụy khôn lường. Ví dụ như dữ liệu bị lộ (tài khoản người dùng, thông tin cá nhân,...). Điều này trở nên hết sức phức tạp vì sẽ liên quan đến nhiều khía cạnh bảo mật trên môi trường Internet.
-
-
-
-## Các tác động của SQLi## Các tác động của SQLi
-
-
-
-Để dễ hình dung hơn, SQLi có thể khiến:Để dễ hình dung hơn, SQLi có thể khiến:
-
-- Làm lộ những dữ liệu mật- Làm lộ những dữ liệu mật
-
-- Phá vỡ logic thực thi của web app- Phá vỡ logic thực thi của web app
-
-- Lộ những database khác (trong vùng khác vùng mà bị SQLi)- Lộ những database khác (trong vùng khác vùng mà bị SQLi)
-
-- Lộ cấu trúc của web app- Lộ cấu trúc của web app
-
-- Và còn nhiều vấn đề khác mà attacker có thể sử dụng để khai thác web app của bạn- Và còn nhiều vấn đề khác mà attacker có thể sử dụng để khai thác web app của bạn
-
-
+Để dễ hình dung hơn, SQLi có thể khiến:
+- Làm lộ những dữ liệu mật
+- Phá vỡ logic thực thi của web app
+- Lộ những database khác (trong vùng khác vùng mà bị SQLi)
+- Lộ cấu trúc của web app
+- Và còn nhiều vấn đề khác mà attacker có thể sử dụng để khai thác web app của bạn
 
 ## SQLi Lab theo chủ đề
 
+Để hiểu rõ hơn về SQLi, cùng nhau thực hiện các bài lab về SQLi thoiiiii
 
-
-Để hiểu rõ hơn về SQLi, cùng nhau thực hiện các bài lab về SQLi thoiiiiiĐể hiểu rõ hơn về SQLi, cùng nhau thực hiện các bài lab về SQLi thoiiiii
-
-
-
-### SQLi Basic AttacksXem nhanh các phần:
-
+Xem nhanh các phần:
 - [SQLi để lấy dữ liệu ẩn và phá vỡ logic website](#sqli-basic)
-
-Hai vấn đề này được xem là những vấn đề cơ bản nhất trong tấn công SQLi.- [SQLi UNION attack](#union-attack)
-
+- [SQLi UNION attack](#union-attack)
 - [Kiểm tra database với SQLi](#examining-database)
+- [Blind SQL Injection - Khi "người mù" tấn công website](#blind-sqli)
+- [Một số cách để nhận dạng lỗ hổng SQLi](#prevent-sqli)
 
-- [Lab: SQL injection vulnerability in WHERE clause allowing retrieval of hidden data](./basic-attacks/retrieval-hidden-data.md)- [Blind SQL Injection - Khi "người mù" tấn công website](#blind-sqli)
+Let's get started!
 
-- [Lab: SQL injection vulnerability allowing login bypass](./basic-attacks/login-bypass.md)- [Một số cách để nhận dạng lỗ hổng SQLi](#prevent-sqli)
+## SQLi để lấy dữ liệu ẩn và phá vỡ logic website <a name="sqli-basic"></a>
 
+Hai vấn đề này được xem là những vấn đề cơ bản nhất trong tấn công SQLi.
 
-
-### SQLi UNION AttackLet's get started!
-
-
-
-SQLi UNION attack là phương pháp SQLi sử dụng keyword "UNION" để truy vấn đến database dựa vào một truy vấn khác. Từ đó, dẫn đến khiến website show ra những thông tin ẩn hoặc khiến database bị sai khiến bởi những truy vấn hợp lệ.## SQLi để lấy dữ liệu ẩn và phá vỡ logic website <a name="sqli-basic"></a>
-
-
-
-- [Lab: SQL injection UNION attack, determining the number of columns](./union-attacks/determining-columns.md)Hai vấn đề này được xem là những vấn đề cơ bản nhất trong tấn công SQLi.
-
-- [Lab: SQL injection UNION attack, finding a column containing text](./union-attacks/finding-column-text.md)
-
-- [Lab: SQL injection UNION attack, retrieving data from other tables](./union-attacks/retrieving-other-tables.md)*MỤC LỤC:*
-
-- [Lab: SQL injection UNION attack, retrieving multiple values in a single column](./union-attacks/multiple-values-single-column.md)- [Lab: SQL injection vulnerability in WHERE clause allowing retrieval of hidden data](#retriving-data)
-
+*MỤC LỤC:*
+- [Lab: SQL injection vulnerability in WHERE clause allowing retrieval of hidden data](#retriving-data)
 - [Lab: SQL injection vulnerability allowing login bypass](#login-bypass)
-
-### Examining Database
 
 ### Lab: SQL injection vulnerability in WHERE clause allowing retrieval of hidden data <a name="retriving-data"></a>
 
-Khi tấn công SQLi, chúng ta cần phải biết những thông tin cơ bản về website, database để có được những chiến lược cụ thể như cách tiếp cận, syntax,.... Những bài lab dưới đây sẽ minh họa điều này.
-
 Đường dẫn đến lab [ở đây](https://portswigger.net/web-security/lab-retrieve-hidden-data)
 
-- [Lab: SQL injection attack, querying the database type and version on Oracle](./examining-database/oracle-version.md)
+Bài lab này yêu cầu ta thực hiện SQLi để show tất cả các sản phẩm ra trong khi hiển thị một category bất kỳ.
 
-- [Lab: SQL injection attack, querying the database type and version on MySQL and Microsoft](./examining-database/mysql-version.md)Bài lab này yêu cầu ta thực hiện SQLi để show tất cả các sản phẩm ra trong khi hiển thị một category bất kỳ.
+`Payload của mình: "https://ac5b1feb1e123a53c0fc5396006d00c3.web-security-academy.net/filter?category=Clothing%2c+shoes+and+accessories%27+OR+1=1--"`
 
-- [Lab: SQL injection attack, listing the database contents on non-Oracle databases](./examining-database/non-oracle-listing.md)
+Có thể hiểu rằng, server sẽ query câu lệnh kiểu: 
 
-- [Lab: SQL injection attack, listing the database contents on Oracle](./examining-database/oracle-listing.md)`Payload của mình: "https://ac5b1feb1e123a53c0fc5396006d00c3.web-security-academy.net/filter?category=Clothing%2c+shoes+and+accessories%27+OR+1=1--"`
+`SELECT * FROM products WHERE category = 'Clothing%2c+shoes+and+accessories' OR 1=1--
 
+Sau "--" thì tất cả sẽ bị comment lại và không thể thực thi. Kết quả với câu query:
 
-
-### Blind SQL InjectionCó thể hiểu rằng, server sẽ query câu lệnh kiểu: 
-
-
-
-Blind SQL Injection cho phép attack có thể sử dụng những chức năng khác của SQL để trigger, tìm kiếm và suy luận từ những response từ server mà không cần dựa vào bất kỳ lỗ hổng nào khác. Do vậy, nó được gọi là Blind - "mù".`SELECT * FROM products WHERE category = 'Clothing%2c+shoes+and+accessories' OR 1=1--
-
-
-
-- [Lab: Blind SQL injection with conditional responses](./blind-sqli/conditional-responses.md)Sau "--" thì tất cả sẽ bị comment lại và không thể thực thi. Kết quả với câu query:
-
-- [Lab: Blind SQL injection with conditional errors](./blind-sqli/conditional-errors.md)
-
-- [Lab: Blind SQL injection with time delays](./blind-sqli/time-delays.md)![Solved retriving hidden data](basic-attack/solved-retriving-data.jpg)
-
-- [Lab: Blind SQL injection with time delays and information retrieval](./blind-sqli/time-delays-info-retrieval.md)
+![Solved retriving hidden data](basic-attack/solved-retriving-data.jpg)
 
 ### Lab: SQL injection vulnerability allowing login bypass <a name="login-bypass"></a>
 
-## Một số cách để nhận dạng lỗ hổng SQLi
-
 Đường dẫn đến lab [ở đây](https://portswigger.net/web-security/lab-login-bypass)
 
-- Thử với ký tự `'`
+Bài lab này yêu cầu ta thực hiện bypass một cổng đăng nhập của website. Đây là một ví dụ rất thường thấy về lỗ hổng SQLi.
 
-- Thử thay đổi cấu trúc syntaxBài lab này yêu cầu ta thực hiện bypass một cổng đăng nhập của website. Đây là một ví dụ rất thường thấy về lỗ hổng SQLi.
-
-- Thử bằng toán tử boolean
-
-- Trigger time delayThông thường, ở một cổng đăng nhập, khi người dùng nhập vào 2 ô là username và password rồi click đăng nhập, server sẽ thực hiện một query đến database để xác thực thông tin đó với câu query kiểu:
-
+Thông thường, ở một cổng đăng nhập, khi người dùng nhập vào 2 ô là username và password rồi click đăng nhập, server sẽ thực hiện một query đến database để xác thực thông tin đó với câu query kiểu:
 
 `SELECT * FROM users WHERE username = 'tuilanhattruong' AND password = 'nhattruonghehe'`
 
