@@ -1,10 +1,19 @@
-sdaaaaaaaaaaaaaaaaa
+# Stored XSS
 
+## 🚧 Under Construction 🚧
 
-## Khai thác lỗ hổng Reflected XSS <a name="exploit"></a>
+**Status:** Đang trong quá trình "nghiên cứu sâu" (aka đang procrastinate) 😅
 
-Như đã nói ở phần ví dụ, người ta thường dùng *alert()* để kiểm tra xem website có dính XSS hay không. Bên cạnh đó, để chắc chắn hơn lỗi XSS đến từ chính website đó, người ta sẽ dùng payload `alert(document.domain)` để hiển thị pop-up cho ra domain của website.
+Xin lỗi bạn đọc! Phần này tác giả đang:
+- ~~Làm LAB~~ ❌
+- ~~Viết write-up~~ ❌
+- Ngồi suy nghĩ về cuộc đời ✅
+- Đợi deadline áp lại gần để có động lực ✅
 
-Bây giờ thì cùng thực hiện "khai thác" lỗ hổng này:
+## Tại sao chưa có nội dung?
 
-### Lab: Exploiting cross-site scripting to steal cookies <a name="steal-cookie"></a>
+Stored XSS thì... nó được "stored" rồi, để từ từ lấy ra viết sau nhé! 🤣
+
+## Hẹn gặp lại!
+
+**Coming soon™** (năm 2077 chắc có rồi 😂)
