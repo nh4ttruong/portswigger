@@ -36,7 +36,7 @@ Nếu attacker có thể khai thác được SQLi thì có thể dẫn đến nh
 
 
 
-## SQLi Lab theo chủ đề## SQLi Lab theo chủ đề
+## SQLi Lab theo chủ đề
 
 
 
