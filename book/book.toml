@@ -20,7 +20,6 @@ hash-files = true
 edit-url-template = "https://github.com/nh4ttruong/portswigger/edit/main/{path}"
 additional-js = ["theme/js/medium-zoom.min.js", "theme/js/image-zoom.js"]
 additional-css = ["theme/css/image-zoom.css"]
-theme = "theme"
 
 [output.html.search]
 enable = true            # enables the search feature
