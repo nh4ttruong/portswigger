@@ -1,0 +1,9 @@
+# mdBook
+book/src
+gh-pages/
+
+# OS generated files
+.DS_Store
+._*
+ehthumbs.db
+Thumbs.db

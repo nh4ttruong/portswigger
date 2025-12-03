@@ -1,12 +1,26 @@
-# PortSwigger self-study
-Nơi rèn luyện kiến thức Web Security của mình 😅
+# PortSwigger Academy Journey
 
-## LAB
-- [SQL Injection](sql-injection/readme.md)
-- [Cross-site scripting (XSS)](sql-injection/readme.md)
-- [File upload vulnerabilities](file-upload-vulnerabilities/readme.md)
-- [OAuth-2.0-authentication-vulnerabilities](OAuth-2.0-authentication-vulnerabilities/readme.md)
+This repository documents my self-study journey through the [PortSwigger Academy](https://portswigger.net/web-security) labs. It serves as a personal learning guide, covering various web security vulnerabilities and my solutions.
 
-## Note
-Hic, thật ra mình lười lắm, viết vài dòng ra Github để đỡ lười. Mình cũng sẽ update lên [nh4ttruong's zone](https://nh4ttruong.github.io) hehe, nhưng mà bao giờ thì chưa biết =)))
+The content is also available as a searchable online book, which you can access here:
 
+**[View the GitHub Pages Site](https://nh4ttruong.github.io/portswigger/)**
+
+---
+
+## Covered Vulnerabilities
+
+This repository explores the following vulnerability categories:
+
+-   **[SQL Injection](./sql-injection/readme.md)**: Techniques for exploiting SQL injection vulnerabilities, including basic attacks, blind SQLi, and database examination.
+-   **[Cross-Site Scripting (XSS)](./xss/readme.md)**: A deep dive into reflected and stored XSS attacks, with various contexts and bypasses.
+-   **[File Upload Vulnerabilities](./file-upload/readme.md)**: Methods for bypassing file upload restrictions to achieve Remote Code Execution (RCE).
+-   **[OAuth 2.0 Vulnerabilities](./oauth/readme.md)**: Exploiting flawed OAuth 2.0 implementations, including hijacking, implicit flow, and redirect stealing.
+
+---
+
+## About This Project
+
+This project is for educational purposes only. The solutions and notes are based on my understanding of the PortSwigger labs and are intended to help others who are on a similar learning path.
+
+Feel free to explore the repository and the accompanying [mdBook site](https://nh4ttruong.github.io/portswigger/).
