@@ -1,6 +1,12 @@
 # mdBook
-book/src
+book/src/*/
+book/html/
 gh-pages/
+
+# Keep these files in book/src
+!book/src/SUMMARY.md
+!book/src/introduction.md
+!book/src/contributors.md
 
 # OS generated files
 .DS_Store

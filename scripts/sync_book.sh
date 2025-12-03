@@ -18,13 +18,21 @@ directories=(
 echo "Preparing book/src directory..."
 mkdir -p book/src
 
+# Remove old synced directories to avoid stale content
+echo "Cleaning old synced directories..."
+for dir in "${directories[@]}"; do
+    if [ -d "book/src/$dir" ]; then
+        rm -rf "book/src/$dir"
+    fi
+done
+
 # Copy each directory into the book/src folder
 for dir in "${directories[@]}"; do
     if [ -d "$dir" ]; then
         echo "Copying '$dir' to 'book/src/$dir'"
         mkdir -p "book/src/$dir"
         # Use rsync to exclude .bak files and copy contents
-        rsync -av --delete --exclude='*.bak' "$dir/" "book/src/$dir/"
+        rsync -av --exclude='*.bak' "$dir/" "book/src/$dir/"
     else
         echo "Directory $dir does not exist, skipping."
     fi
