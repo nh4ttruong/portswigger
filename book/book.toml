@@ -5,7 +5,7 @@ description = "Comprehensive solutions and write-ups for PortSwigger Web Securit
 
 [build]
 create-missing = false
-build-dir = "./"
+build-dir = "html"
 
 [preprocessor.index]
 
