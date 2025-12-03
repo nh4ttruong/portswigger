@@ -1,0 +1,46 @@
+[book]
+title = "PortSwigger Web Security Academy Solutions"
+authors = ["nh4ttruong"]
+description = "Comprehensive solutions and write-ups for PortSwigger Web Security Academy labs. Step-by-step guides covering XSS, SQL Injection, OAuth, File Upload vulnerabilities, and more. Educational content for learning web security through hands-on practice."
+
+[build]
+create-missing = false
+build-dir = "./"
+
+[preprocessor.index]
+
+[preprocessor.links]
+
+[preprocessor.alerts]
+
+[output.html]
+default-theme = "ayu"
+preferred-dark-theme = "ayu"
+git-repository-url = "https://github.com/nh4ttruong/portswigger"
+git-repository-icon = "fa-github"
+site-url = "/portswigger/"
+hash-files = true
+edit-url-template = "https://github.com/nh4ttruong/portswigger/edit/main/{path}"
+additional-js = ["theme/js/medium-zoom.min.js", "theme/js/image-zoom.js"]
+additional-css = ["theme/css/image-zoom.css"]
+
+[output.html.search]
+enable = true            # enables the search feature
+limit-results = 30       # maximum number of search results
+teaser-word-count = 30   # number of words used for a search result teaser
+use-boolean-and = true   # multiple search terms must all match
+boost-title = 2          # ranking boost factor for matches in headers
+boost-hierarchy = 1      # ranking boost factor for matches in page names
+boost-paragraph = 1      # ranking boost factor for matches in text
+expand = true            # partial words will match longer terms
+heading-split-level = 3  # link results to heading levels
+copy-js = true           # include Javascript code for search
+
+[output.html.playground]
+copyable = true
+editable = true
+
+[output.html.fold]
+enable = true
+
+[output.wordcount]

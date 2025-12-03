@@ -24,4 +24,3 @@ This repository explores the following vulnerability categories:
 This project is for educational purposes only. The solutions and notes are based on my understanding of the PortSwigger labs and are intended to help others who are on a similar learning path.
 
 Feel free to explore the repository and the accompanying [mdBook site](https://nh4ttruong.github.io/portswigger/).
-
