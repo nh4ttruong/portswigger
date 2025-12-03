@@ -1,0 +1,46 @@
+name: Deploy GitHub Pages
+
+defaults:
+  run:
+    shell: bash
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pages: write
+      id-token: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up mdBook
+        uses: peaceiris/actions-mdbook@v1
+        with:
+          mdbook-version: 'latest'
+
+      - name: Install cargo packages
+        run: cargo install mdbook-alerts
+
+      - name: Build site with mdbook
+        run: mdbook build
+        working-directory: ./book
+
+      - name: Custom git_repository_edit_url
+        run: |
+          find ./book/html -name "*.html" -exec sed -i 's|edit/main/book/src/|edit/main/|g' {} +
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        if: github.ref == 'refs/heads/main'
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./book/html
+          publish_branch: gh-pages
