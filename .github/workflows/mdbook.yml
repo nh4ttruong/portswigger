@@ -26,6 +26,11 @@ jobs:
         with:
           mdbook-version: 'latest'
 
+      - name: Sync sources
+        run: |
+          chmod +x scripts/sync_book.sh
+          bash scripts/sync_book.sh
+
       - name: Install cargo packages
         run: cargo install mdbook-alerts
 
