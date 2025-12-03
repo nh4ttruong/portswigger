@@ -1,0 +1,475 @@
+<!DOCTYPE HTML>
+<html lang="en" class="ayu sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>SQL Injection - PortSwigger Web Security Academy Solutions</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="Comprehensive solutions and write-ups for PortSwigger Web Security Academy labs. Step-by-step guides covering XSS, SQL Injection, OAuth, File Upload vulnerabilities, and more. Educational content for learning web security through hands-on practice.">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../theme/css/image-zoom.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "ayu";
+            const default_dark_theme = "ayu";
+            window.path_to_searchindex_js = "../searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('ayu')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">PortSwigger Web Security Academy Solutions</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+                        <a href="https://github.com/nh4ttruong/portswigger" title="Git repository" aria-label="Git repository">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg></span>
+                        </a>
+                        <a href="https://github.com/nh4ttruong/portswigger/edit/main/src/sql-injection/readme.md" title="Suggest an edit" aria-label="Suggest an edit" rel="edit">
+                            <span class=fa-svg id="git-edit-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M421.7 220.3l-11.3 11.3-22.6 22.6-205 205c-6.6 6.6-14.8 11.5-23.8 14.1L30.8 511c-8.4 2.5-17.5 .2-23.7-6.1S-1.5 489.7 1 481.2L38.7 353.1c2.6-9 7.5-17.2 14.1-23.8l205-205 22.6-22.6 11.3-11.3 33.9 33.9 62.1 62.1 33.9 33.9zM96 353.9l-9.3 9.3c-.9 .9-1.6 2.1-2 3.4l-25.3 86 86-25.3c1.3-.4 2.5-1.1 3.4-2l9.3-9.3H112c-8.8 0-16-7.2-16-16V353.9zM453.3 19.3l39.4 39.4c25 25 25 65.5 0 90.5l-14.5 14.5-22.6 22.6-11.3 11.3-33.9-33.9-62.1-62.1L314.3 67.7l11.3-11.3 22.6-22.6 14.5-14.5c25-25 65.5-25 90.5 0z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <h1 id="sql-injection"><a class="header" href="#sql-injection">SQL Injection</a></h1>
+<h2 id="đôi-nét-về-sql-injection-sqli"><a class="header" href="#đôi-nét-về-sql-injection-sqli">Đôi nét về SQL Injection (SQLi)?</a></h2>
+<p>SQLi là một lỗ hổng trên web mà attacker sẽ có thể tạo ra những query đến database của website đó. Lỗ hổng này sẽ làm những dữ liệu mà khó có thể xem được một cách bình thường trở nên bị leak.</p>
+<p>Lỗ hổng này khá rộng. Nó có thể ảnh hưởng trực tiếp đến user data và cả web database nếu attack muốn (có thể thêm, xóa, sửa,…)</p>
+<p>Nếu attacker có thể khai thác được SQLi thì có thể dẫn đến nhiều hệ lụy khôn lường. Ví dụ như dữ liệu bị lộ (tài khoản người dùng, thông tin cá nhân,…). Điều này trở nên hết sức phức tạp vì sẽ liên quan đến nhiều khía cạnh bảo mật trên môi trường Internet.</p>
+<h2 id="các-tác-động-của-sqli"><a class="header" href="#các-tác-động-của-sqli">Các tác động của SQLi</a></h2>
+<p>Để dễ hình dung hơn, SQLi có thể khiến:</p>
+<ul>
+<li>Làm lộ những dữ liệu mật</li>
+<li>Phá vỡ logic thực thi của web app</li>
+<li>Lộ những database khác (trong vùng khác vùng mà bị SQLi)</li>
+<li>Lộ cấu trúc của web app</li>
+<li>Và còn nhiều vấn đề khác mà attacker có thể sử dụng để khai thác web app của bạn</li>
+</ul>
+<h2 id="sqli-lab-theo-chủ-đề"><a class="header" href="#sqli-lab-theo-chủ-đề">SQLi Lab theo chủ đề</a></h2>
+<p>Để hiểu rõ hơn về SQLi, cùng nhau thực hiện các bài lab về SQLi thoiiiii</p>
+<p>Xem nhanh các phần:</p>
+<ul>
+<li><a href="#sqli-basic">SQLi để lấy dữ liệu ẩn và phá vỡ logic website</a></li>
+<li><a href="#union-attack">SQLi UNION attack</a></li>
+<li><a href="#examining-database">Kiểm tra database với SQLi</a></li>
+<li><a href="#blind-sqli">Blind SQL Injection - Khi “người mù” tấn công website</a></li>
+<li><a href="#prevent-sqli">Một số cách để nhận dạng lỗ hổng SQLi</a></li>
+</ul>
+<p>Let’s get started!</p>
+<h2 id="sqli-để-lấy-dữ-liệu-ẩn-và-phá-vỡ-logic-website"><a class="header" href="#sqli-để-lấy-dữ-liệu-ẩn-và-phá-vỡ-logic-website">SQLi để lấy dữ liệu ẩn và phá vỡ logic website <a name="sqli-basic"></a></a></h2>
+<p>Hai vấn đề này được xem là những vấn đề cơ bản nhất trong tấn công SQLi.</p>
+<p><em>MỤC LỤC:</em></p>
+<ul>
+<li><a href="#retriving-data">Lab: SQL injection vulnerability in WHERE clause allowing retrieval of hidden data</a></li>
+<li><a href="#login-bypass">Lab: SQL injection vulnerability allowing login bypass</a></li>
+</ul>
+<h3 id="lab-sql-injection-vulnerability-in-where-clause-allowing-retrieval-of-hidden-data"><a class="header" href="#lab-sql-injection-vulnerability-in-where-clause-allowing-retrieval-of-hidden-data">Lab: SQL injection vulnerability in WHERE clause allowing retrieval of hidden data <a name="retriving-data"></a></a></h3>
+<p>Đường dẫn đến lab <a href="https://portswigger.net/web-security/lab-retrieve-hidden-data">ở đây</a></p>
+<p>Bài lab này yêu cầu ta thực hiện SQLi để show tất cả các sản phẩm ra trong khi hiển thị một category bất kỳ.</p>
+<p><code>Payload của mình: "https://ac5b1feb1e123a53c0fc5396006d00c3.web-security-academy.net/filter?category=Clothing%2c+shoes+and+accessories%27+OR+1=1--"</code></p>
+<p>Có thể hiểu rằng, server sẽ query câu lệnh kiểu:</p>
+<p>`SELECT * FROM products WHERE category = ‘Clothing%2c+shoes+and+accessories’ OR 1=1–</p>
+<p>Sau “–” thì tất cả sẽ bị comment lại và không thể thực thi. Kết quả với câu query:</p>
+<p><img src="basic-attack/solved-retriving-data.jpg" alt="Solved retriving hidden data"></p>
+<h3 id="lab-sql-injection-vulnerability-allowing-login-bypass"><a class="header" href="#lab-sql-injection-vulnerability-allowing-login-bypass">Lab: SQL injection vulnerability allowing login bypass <a name="login-bypass"></a></a></h3>
+<p>Đường dẫn đến lab <a href="https://portswigger.net/web-security/lab-login-bypass">ở đây</a></p>
+<p>Bài lab này yêu cầu ta thực hiện bypass một cổng đăng nhập của website. Đây là một ví dụ rất thường thấy về lỗ hổng SQLi.</p>
+<p>Thông thường, ở một cổng đăng nhập, khi người dùng nhập vào 2 ô là username và password rồi click đăng nhập, server sẽ thực hiện một query đến database để xác thực thông tin đó với câu query kiểu:</p>
+<p><code>SELECT * FROM users WHERE username = 'tuilanhattruong' AND password = 'nhattruonghehe'</code></p>
+<p>Như vậy, dựa vào cấu trúc của câu query như vậy, ta có thể dễ dàng thêm, xóa hoặc sửa câu query để bypass được cổng này (nếu server không triển khai bảo mật SQLi)</p>
+<p>Mình sẽ test thử cổng đăng nhập với <code>administrator:1 or 1=1--</code>. Tất nhiên là không thể login được. Mình sẽ sử dụng Burp để send request và kiểm tra payload của mình khi đăng nhập như thế nào. Sau khi kiểm tra, mình thấy được request khi login như sau:</p>
+<p><img src="basic-attack/test-query-login.jpg" alt="Solved retriving hidden data"></p>
+<p>Thử cách khác, vậy tại sao ta không thử bypass bằng cách ngăn server xác thực mật khẩu bằng cách nhét “–” vào sau <strong>username</strong>. Mình sẽ type trực tiếp vào ô username luôn và password có thể điền bất cứ gì cũng được:</p>
+<p><img src="basic-attack/sqli-bypass-login.jpg" alt="Bypass login"></p>
+<p>Kết quả là:</p>
+<p><img src="basic-attack/solved-sqli-bypass-login.jpg" alt="Solved SQLi bypass login"></p>
+<h2 id="sqli-union-attack"><a class="header" href="#sqli-union-attack">SQLi UNION attack <a name="union-attack"></a></a></h2>
+<p>SQLi UNION attack là phương pháp SQLi sử dụng keyword “UNION” để truy vấn đến database dựa vào một truy vấn khác. Từ đó, dẫn đến khiến website show ra những thông tin ẩn hoặc khiến database bị sai khiến bởi những truy vấn hợp lệ.</p>
+<p><em>MỤC LỤC:</em></p>
+<ul>
+<li><a href="#union-attack-null-value">Lab: SQL injection UNION attack, determining the number of columns returned by the query</a></li>
+<li><a href="#union-attack-finding-column">Lab: SQL injection UNION attack, finding a column containing text</a></li>
+<li><a href="#union-attack-get-data-from-other-tables">Lab: SQL injection UNION attack, retrieving data from other tables</a></li>
+<li><a href="#union-attack-retrieving-multiple-value">Lab: SQL injection UNION attack, retrieving multiple values in a single column</a></li>
+<li><a href="#union-attack-retrieving-multiple-value">Lab: SQL injection UNION attack, retrieving multiple values in a single column</a></li>
+</ul>
+<h3 id="lab-sql-injection-union-attack-determining-the-number-of-columns-returned-by-the-query"><a class="header" href="#lab-sql-injection-union-attack-determining-the-number-of-columns-returned-by-the-query">Lab: SQL injection UNION attack, determining the number of columns returned by the query <a name="union-attack-null-value"></a></a></h3>
+<p>Đường dẫn đến lab <a href="https://portswigger.net/web-security/union-attacks/lab-determine-number-of-columns">ở đây</a></p>
+<p>Bài lab yêu cầu ta xác định số cột trả về khi tiêm SQL để server trả về một hàng có giá trị null.</p>
+<p>Payload: <code>https://ac391ffa1e25ddc4c0e95d60001300d6.web-security-academy.net/filter?category=Lifestyle%27+UNION+SELECT+NULL,NULL,NULL--</code></p>
+<p>Kết quả:</p>
+<p><img src="sqli-union-attack/solved-union-attack-null-value.jpg" alt="Solved SQLi union attack with null value"></p>
+<h3 id="lab-sql-injection-union-attack-finding-a-column-containing-text"><a class="header" href="#lab-sql-injection-union-attack-finding-a-column-containing-text">Lab: SQL injection UNION attack, finding a column containing text <a name="union-attack-finding-column"></a></a></h3>
+<p>Đường dẫn đến lab <a href="https://portswigger.net/web-security/union-attacks/lab-find-column-containing-text">ở đây</a></p>
+<p>Ở lab này, mình cần phải tìm được chuỗi theo yêu cầu của lab <strong>‘BVuEQu’</strong>.</p>
+<p><code>Payload: "https://ac861f221ec2cb3cc0b71c46008a00b5.web-security-academy.net/filter?category=Gifts%27+UNION+SELECT+NULL,%27BVuEQu%27,NULL--"</code></p>
+<p><img src="sqli-union-attack/solved-union-attack-finding-column.jpg" alt="Solved SQLi finding column"></p>
+<p>Với UNION Attack, ta có thể tìm một cột chưa giá trị loại “string” bằng cách thử chèn đoạn string cần tìm vào:</p>
+<p><code>UNION SELECT {string_can_tim},NULL,NULL--</code></p>
+<p>{string_can_tim} có thể nằm ở bất kỳ cột nào trong database, do đó hãy thử vận may của mình bạn nhé, biết đâu những từ khóa thông dụng có thể cho ta xem được hết cả database của cột cần tìm.</p>
+<h3 id="lab-sql-injection-union-attack-retrieving-data-from-other-tables"><a class="header" href="#lab-sql-injection-union-attack-retrieving-data-from-other-tables">Lab: SQL injection UNION attack, retrieving data from other tables <a name="union-attack-get-data-from-other-tables"></a></a></h3>
+<p>Đường dẫn đến lab <a href="https://portswigger.net/web-security/union-attacks/lab-retrieve-data-from-other-tables">ở đây</a></p>
+<p>Trong lab này, website chứa một table với tên là “users”. Việc của mình là tìm account của admin và login.</p>
+<p>Sử dụng UNION SELECT với payload, ta dễ dàng retrieve được data của bảng users:</p>
+<p><img src="sqli-union-attack/database-users-table.jpg" alt="Database từ users table">
+’
+<code>Payload: "https://ac1c1fcf1ef5e8c8c0a17e340047008c.web-security-academy.net/filter?category=Accessories%27+UNION+SELECT+username,password+FROM+users--"</code></p>
+<p><img src="sqli-union-attack/solved-union-attack-finding-other-table.jpg" alt="Solved SQLi finding other table"></p>
+<h3 id="lab-sql-injection-union-attack-retrieving-multiple-values-in-a-single-column"><a class="header" href="#lab-sql-injection-union-attack-retrieving-multiple-values-in-a-single-column">Lab: SQL injection UNION attack, retrieving multiple values in a single column <a name="union-attack-retrieving-multiple-value"></a></a></h3>
+<p>Đường dẫn đến lab <a href="https://portswigger.net/web-security/union-attacks/lab-retrieve-multiple-values-in-single-column">ở đây</a></p>
+<p>Website chứa một table với tên là “users”. Việc của mình là tìm account của admin và login.</p>
+<p>Đầu tiên, mình đã biết trước là trong bảng users đã có 2 cột là username và password. Nhưng khi mình query thông thường thì bị lỗi server. Do vậy mình cần phải tìm cách khác.</p>
+<p><img src="sqli-union-attack/multi-value-test1.jpg" alt="Payload dò cột lần 1"></p>
+<p>Mình thử với <code>Payload: "Gifts' UNION SELECT NULL,username FROM users--"</code>, thì được:</p>
+<p><img src="sqli-union-attack/multi-value-test2.jpg" alt="Payload dò cột lần 2"></p>
+<p>Như vậy, có thể sử dụng cách này cùng với cách nối username và password lại để tìm username và password của database.</p>
+<p><img src="sqli-union-attack/exploit-multi-value.jpg" alt="Exploit thành công"></p>
+<p>Mình thử với <code>Payload: "Gifts' UNION SELECT NULL,username ||'-'|| password FROM users--</code></p>
+<p><img src="sqli-union-attack/solved-union-attack-multi-value-in-column.jpg" alt="Solveds"></p>
+<h2 id="kiểm-tra-database-với-sqli"><a class="header" href="#kiểm-tra-database-với-sqli">Kiểm tra database với SQLi <a name="examining-database"></a></a></h2>
+<p>Khi tấn công SQLi, chúng ta cần phải biết những thông tin cơ bản về website, database để có được những chiến lược cụ thể như cách tiếp cận, syntax,…. Những bài lab dưới đây sẽ minh họa điều này.</p>
+<p><em>MỤC LỤC:</em></p>
+<ul>
+<li><a href="#oracle-database-type">Lab: SQL injection attack, querying the database type and version on Oracle</a></li>
+<li><a href="#mysql-database-type">Lab: SQL injection attack, querying the database type and version on MySQL and Microsoft</a></li>
+<li><a href="#listing-non-oracle">Lab: SQL injection attack, listing the database contents on non-Oracle databases</a></li>
+<li><a href="#listing-oracle">Lab: SQL injection attack, listing the database contents on Oracle</a></li>
+</ul>
+<h3 id="lab-sql-injection-attack-querying-the-database-type-and-version-on-oracle"><a class="header" href="#lab-sql-injection-attack-querying-the-database-type-and-version-on-oracle">Lab: SQL injection attack, querying the database type and version on Oracle <a name="oracle-database-type"></a></a></h3>
+<p>Đường dẫn đến lab <a href="https://portswigger.net/web-security/examining-the-database/lab-querying-database-version-oracle">ở đây</a></p>
+<p>Lab này yêu cầu ta bắt database nói ra loại database và version của nó.</p>
+<p>Database của lab này chính là Oracle và việc của ta là làm sao để server trả về theo yêu cầu.</p>
+<p>Trong Oracle, built-in table có tên là dual, do vậy, ta có thể dò cột bằng cách gọi FROM đến bảng dual.</p>
+<p><img src="slqi-examining-database/call-dual-table.jpg" alt="Dò cột bảng dual"></p>
+<p>Đến đây, với <a href="https://portswigger.net/web-security/cheat-sheet">cheat sheet</a>, ta có thể biết được các câu query mẫu để lấy thông tin database. Từ đó, dễ dàng SQLi ở challenge này.</p>
+<p><code>Payload: "Gifts' UNION SELECT NULL,banner FROM v$version--"</code></p>
+<p><img src="slqi-examining-database/solved-oracle-version.jpg" alt="Solved"></p>
+<h3 id="lab-sql-injection-attack-querying-the-database-type-and-version-on-mysql-and-microsoft"><a class="header" href="#lab-sql-injection-attack-querying-the-database-type-and-version-on-mysql-and-microsoft">Lab: SQL injection attack, querying the database type and version on MySQL and Microsoft <a name="mysql-database-type"></a></a></h3>
+<p>Đường dẫn đến lab <a href="https://portswigger.net/web-security/examining-the-database/lab-querying-database-version-mysql-microsoft">ở đây</a></p>
+<p>Lab này tương tự Lab về <a href="#oracle-database-type">Oracle datable</a> ở trên nhưng lần này là với Microsoft và MySQL database.</p>
+<p>Database lần này cũng gồm 2 cột sau khi thử:</p>
+<p><code>Payload: "Gifts' UNION SELECT NULL,NULL#"</code></p>
+<p>Tuy vậy, lúc đầu mình thử ký tự “#” thì server báo lỗi. Hên sao mình nhớ đến HTML Encoding và chuyển nó thành “%23” thì oke.</p>
+<p><code>Payload: "Gifts' UNION SELECT NULL,@@version#"</code></p>
+<p><img src="slqi-examining-database/solved-mysql-version.jpg" alt="Solved"></p>
+<h3 id="lab-sql-injection-attack-listing-the-database-contents-on-non-oracle-databases"><a class="header" href="#lab-sql-injection-attack-listing-the-database-contents-on-non-oracle-databases">Lab: SQL injection attack, listing the database contents on non-Oracle databases <a name="listing-non-oracle"></a></a></h3>
+<p>Đường dẫn đến lab <a href="https://portswigger.net/web-security/examining-the-database/lab-listing-database-contents-non-oracle">ở đây</a></p>
+<p>Lab này yêu cầu ta tìm kiếm account của admin để login. Tuy vậy, ta chưa biết database loại nào mà chỉ biết nó không phải là Oracle mà thôi. Đầu tiên, mình sẽ dò số cột trong database:</p>
+<p><img src="slqi-examining-database/probe-database.jpg" alt="Dò số cột của database"></p>
+<p>Ta thấy, có 2 cột trong database này. Tiếp tục, mình sẽ dò version của database này:</p>
+<p><code>Payload: "Pets' UNION SELECT NULL,version()--"</code></p>
+<p><img src="slqi-examining-database/probe-version-database.jpg" alt="Dò version của database"></p>
+<p>Đến đây, ta đã biết nó là PostgreSQL 11.14. Ta sẽ sử dụng query <code>SELECT null,table_name FROM information_schema.tables</code> để show các bảng trong database này.</p>
+<p><img src="slqi-examining-database/show-tables.jpg" alt="Show các bảng trong database"></p>
+<p>Trong các bảng, có 2 bảng có thể chứa thông tin tài khoản của các user đó chính là <em>users_atqsuh</em> và <em>pg_user</em>. Mình sẽ chọn cái đầu tiên để đi sâu xem có gì trong đó, nếu không có thì quay lại thoiii :v. Trước tiên, mình sẽ cần show các cột trong bảng <em>users_atqsuh</em>:</p>
+<p><code>Payload: "Pets' UNION SELECT null,column_name FROM information_schema.columns WHERE table_name='users_atqsuh'--"</code></p>
+<p><img src="slqi-examining-database/show-detail-column.jpg" alt="Show chi tiết cột"></p>
+<p>Đến đây, mình đã biết được rằng thông tin tài khoản và mật khẩu sẽ được lưu vào 2 cột đó chính là <em>username_cipszl</em> và <em>password_mhklnf</em>. Giờ thì query nó ra thôi:</p>
+<p><img src="slqi-examining-database/query-account.jpg" alt="Query account"></p>
+<p>Có tài khoản xong thì login và solved:</p>
+<p><img src="slqi-examining-database/solved-listing-database.jpg" alt="Solved"></p>
+<h3 id="lab-sql-injection-attack-listing-the-database-contents-on-oracle"><a class="header" href="#lab-sql-injection-attack-listing-the-database-contents-on-oracle">Lab: SQL injection attack, listing the database contents on Oracle <a name="listing-oracle"></a></a></h3>
+<p>Đường dẫn đến lab <a href="https://portswigger.net/web-security/examining-the-database/lab-listing-database-contents-oracle">ở đây</a></p>
+<p>Bài này thì tương tự bài <a href="#listing-non-oracle">non-Oracle ở trên</a>. Do đó, mình sẽ làm tương tự.</p>
+<p><code>Payload: "Gifts' UNION SELECT null,table_name FROM all_tables--"</code></p>
+<p><img src="slqi-examining-database/users-table-oracle.jpg" alt="Show all table"></p>
+<p><code>Payload: "Gifts' UNION SELECT null,column_name FROM all_tab_columns WHERE table_name='USERS_TXZJUA'--"</code></p>
+<p><img src="slqi-examining-database/show-detail-table-oracle.jpg" alt="show-detail-table-oracle"></p>
+<p><code>Payload: "Gifts' UNION SELECT USERNAME_TPLFRU,PASSWORD_DHDRXQ FROM USERS_TXZJUA--"</code></p>
+<p><img src="slqi-examining-database/show-account-oracle.jpg" alt="show account"></p>
+<p>Và solve rồi nè:</p>
+<p><img src="slqi-examining-database/solved-listing-oracle-database.jpg" alt="Solved"></p>
+<h2 id="blind-sql-injection---khi-người-mù-tấn-công-website"><a class="header" href="#blind-sql-injection---khi-người-mù-tấn-công-website">Blind SQL Injection - Khi “người mù” tấn công website <a name="blind-sqli"></a></a></h2>
+<p>Blind SQL Injection cho phép attack có thể sử dụng những chức năng khác của SQL để trigger, tìm kiếm và suy luận từ những response từ server mà không cần dựa vào bất kỳ lỗ hổng nào khác. Do vậy, nó được gọi là Bline - “mù”.</p>
+<p><em>MỤC LỤC:</em></p>
+<ul>
+<li><a href="#blind-conditional-responses">Lab: Blind SQL injection with conditional responses</a></li>
+<li><a href="#blind-conditional-error">Lab: Blind SQL injection with conditional errors</a></li>
+<li><a href="#time-delays">Lab: Blind SQL injection with time delays</a></li>
+<li><a href="#time-delays-info-retrieval">Lab: Blind SQL injection with time delays and information retrieval</a></li>
+</ul>
+<h3 id="lab-blind-sql-injection-with-conditional-responses"><a class="header" href="#lab-blind-sql-injection-with-conditional-responses">Lab: Blind SQL injection with conditional responses <a name="blind-conditional-responses"></a></a></h3>
+<p>Đường dẫn đến lab <a href="https://portswigger.net/web-security/blind/lab-conditional-responses">ở đây</a></p>
+<p>Bài lab này được thiết kế để ta attack bằng phương pháp Blind SQLi. Nó chứa một cái gọi là tracking cookie để phân tích và kiểm soát cookie người dùng. <em>Bên cạnh đó, khi query thì không gì được trả về nếu điều kiện sai hoặc lỗi ngoại trừ khi mình query đúng thì nó sẽ trả về chuỗi “Welcome back”</em>. Bên cạnh đó, nó chứa một bảng users với 2 cột là username và password. Lab yêu cầu ta chiếm quyền kiểm soát administrator.</p>
+<p>Mở Burp lên và kiểm tra request khi filter category thì mình sẽ thấy một tham số là TrackingId.</p>
+<p><img src="blind-sqli/blind-conditional-res/tracking-id.jpg" alt="TrackingId trong request"></p>
+<p>Bây giờ, mình sẽ thử test điều kiền khi lồng toán tử vào chỗ này:</p>
+<p><img src="blind-sqli/blind-conditional-res/test-condition-res.jpg" alt="Test condition"></p>
+<p>Như vậy, có thể thấy, mình sẽ có thể Blind SQLi ở đây để dò ra thông tin cần tìm (password). Giờ thì mình sẽ thử dò thử xem có account với username là “administrator” hay không:</p>
+<p><img src="blind-sqli/blind-conditional-res/probe-table-and-admin-user.jpg" alt="Dò account admin"></p>
+<p>Tada, website chứa account admin đó rồi (cái này lab cũng có đề cập nhưng mà mình kiếm thử). Giờ thì đến công đoạn tìm password. Trước tiên, mình sẽ dùng <strong>LENGTH()</strong> để kiểm tra xem password có độ dài bao nhiêu. Sau khi dò với operator <strong>&gt;</strong> và <strong>&lt;</strong> một lúc thì mình đã xác định được <code>LENGTH(password)=20</code>:</p>
+<p><img src="blind-sqli/blind-conditional-res/find-length-password.jpg" alt="Dò account admin"></p>
+<p>Đến đây, mình sẽ phải dò từng ký tự trong password (20 lần) để có thể ghép lại thành password cần tìm với payload: <code>Payload: "TrackingId=G4M7YunBTBgfypfH' AND (SELECT SUBSTRING(password,{vi-tri-do},1) FROM users WHERE username='administrator' AND LENGTH(password)=20)='{ky-tu-can-do}"</code>. Mình đã biết rằng, khi điều kiện SQL đúng thì website sẽ trả về string “Welcome back!”, do vậy, mình sẽ brute-force nó bằng Burp Intruder. Sau đây là một vài setting trước khi brute-force:</p>
+<ul>
+<li>Chỉnh chế độ về Cluster-bomb để có thể tùy chỉnh vị trí payload brute-force</li>
+<li>Thêm khóa vào vị trí cần brute-force với nút “Add $”. Khóa đầu tiên mình để là vị trí trong password (1-20) và khóa thứ hai là ký tự trong password.</li>
+</ul>
+<p><img src="blind-sqli/blind-conditional-res/bruteforce.jpg" alt="Setting cluster-bomb mode"></p>
+<ul>
+<li>Tạo danh sách các ký tự có thể có trong password (a-Z, 0-9) cho lần lượt 2 khóa như ảnh trên.</li>
+</ul>
+<p><img src="blind-sqli/blind-conditional-res/intruder-payload-options.jpg" alt="Payload list trước khi brute-force"></p>
+<ul>
+<li>Tạo điều kiện trả về khi tìm đúng ký tự với điều kiện là “Welcome back!”</li>
+</ul>
+<p><img src="blind-sqli/blind-conditional-res/intruder-grep.jpg" alt="Tạo điều kiện trả về"></p>
+<ul>
+<li>Click “Start attack” và chờ thôi</li>
+</ul>
+<p><img src="blind-sqli/blind-conditional-res/while-bruteforce.jpg" alt="Trong khi bruteforce"></p>
+<p>Sau 2 - 3 tiếng bruteforce, mình đã có được những kết quả trả về match với “Welcome back!”. Công việc giờ là sắp xếp lại thành một chuỗi theo thứ tự thôi:</p>
+<p><img src="blind-sqli/blind-conditional-res/finish-bruteforce.jpg" alt="Kết quả bruteforce"></p>
+<p>Chuỗi password mà mình đã sắp xếp: <code>Password: 3n2xxm4cprzjuiim5hpi</code></p>
+<p>Submit và solved challenge rồi nè:</p>
+<p><img src="blind-sqli/blind-conditional-res/solved.jpg" alt="Solved"></p>
+<h3 id="lab-blind-sql-injection-with-conditional-errors"><a class="header" href="#lab-blind-sql-injection-with-conditional-errors">Lab: Blind SQL injection with conditional errors <a name="blind-conditional-error"></a></a></h3>
+<p>Đường dẫn đến lab <a href="https://portswigger.net/web-security/blind/lab-conditional-errors">ở đây</a></p>
+<p>Lab này cũng khá giống với bài <a href="#blind-conditional-responses">conditonal response</a>. Đại khái, nếu bài lab trước ta có thể dựa vào phản hồi “Welcome back!” để suy luận ra đúng ký tự password thì ở lab này, ta sẽ phải dựa vào lỗi phản hồi để có thể suy luận. Vì vậy, mình sẽ làm nhanh hehe:</p>
+<p>Xác định database:</p>
+<p><img src="blind-sqli/blind-conditional-error/define-database.jpg" alt="Xác định database"></p>
+<p>Xác định độ dài password (length=20):</p>
+<p><img src="blind-sqli/blind-conditional-error/length-password.jpg" alt="Xác định độ dài password"></p>
+<p>Kết quả bruteforce:</p>
+<p><img src="blind-sqli/blind-conditional-error/finish-bruteforce.jpg" alt="Kết quả bruteforce"></p>
+<p>Password sau khi ghép lại: <code>i1xcr4zruhfc78onms06</code>. Và solved challenge:</p>
+<p><img src="blind-sqli/blind-conditional-error/solved.jpg" alt="KSolved"></p>
+<h3 id="lab-blind-sql-injection-with-time-delays"><a class="header" href="#lab-blind-sql-injection-with-time-delays">Lab: Blind SQL injection with time delays <a name="time-delays"></a></a></h3>
+<p>Đường dẫn đến lab <a href="https://portswigger.net/web-security/blind/lab-time-delays">ở đây</a></p>
+<p>Trong lab này, chúng ta cần khiến cho server bị delay 10 giây. Với blind SQLi, ta có thể sử dụng <strong>time delays</strong> trong các câu query.</p>
+<p><img src="blind-sqli/blind-time-delays/time-delays-table.jpg" alt="SQli time delay cheat-sheet"></p>
+<p>Bằng bảng cheat-sheet trên, mình đã biết thử và thấy được database này là PostgreSQL. Do vậy, lab khá nhanh khi mình chỉ cần concat TrackingId với câu truy vấn bằng payload sau đây:</p>
+<p><img src="blind-sqli/blind-time-delays/payload.jpg" alt="SQli time delay cheat-sheet"></p>
+<p>Sau đó, kiểm tra browser và solved lab thooiiiii:</p>
+<p><img src="blind-sqli/blind-time-delays/solved.jpg" alt="KSolved"></p>
+<h3 id="lab-blind-sql-injection-with-time-delays-and-information-retrieval"><a class="header" href="#lab-blind-sql-injection-with-time-delays-and-information-retrieval">Lab: Blind SQL injection with time delays and information retrieval <a name="time-delays-info-retrieval"></a></a></h3>
+<p>Đường dẫn đến lab <a href="https://portswigger.net/web-security/blind/lab-time-delays-info-retrieval">ở đây</a></p>
+<p>Như tên của nó, bài lab này yêu cầu ta thực hiện blind SQLi cùng với time delays để leak tài khoản administrator từ database. Lab này đại khái là sự kết hợp của <a href="#blind-conditional-responses">Blind SQLi conditional responses</a> và <a href="#time-delays">Blind SQli time delays</a>. Do vậy, theo hướng đó thì làm khá nhanh khi mình chỉ cần thay đổi cách bruteforce.</p>
+<p>Đầu tiên, xác định database để lựa syntax đúng:</p>
+<p><img src="blind-sqli/blind-time-delays-info-retrivial/define-database.jpg" alt="Xác định database"></p>
+<p>Bằng cách đó, mình biết rằng database lần này là PortgreSQL. Sau đó, tới công đoạn setup bruteforce. Lần này, mình không thể dùng “grep match” của Intruder vì phản hồi trả về là không có gì cả. Do vậy, mình sẽ sử dụng Resource Pool để setup thời gian timeout cho mỗi request:</p>
+<p><img src="blind-sqli/blind-time-delays-info-retrivial/resource-pool.jpg" alt="Tạo resource pool"></p>
+<p>Và bắt đầu bruteforce thôi. Sau một khoản thời gian không ngắn, mình đã tìm được password: <code>6lunhbudoihu7km8zku1</code>.</p>
+<p>Submit và solved lab hehe:</p>
+<p><img src="blind-sqli/blind-time-delays-info-retrivial/solved.jpg" alt="Solved"></p>
+<h2 id="một-số-cách-để-nhận-dạng-lỗ-hổng-sqli"><a class="header" href="#một-số-cách-để-nhận-dạng-lỗ-hổng-sqli">Một số cách để nhận dạng lỗ hổng SQLi <a name="prevent-sqli"></a></a></h2>
+<ul>
+<li>Thử với ký tự <code>'</code></li>
+<li>Thử thay đổi cấu trúc syntax</li>
+<li>Thử bằng toán tử boolean</li>
+<li>Trigger time delay</li>
+</ul>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../oauth/index.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
+
+                            <a rel="next prefetch" href="../xss/index.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../oauth/index.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
+
+                    <a rel="next prefetch" href="../xss/index.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                    </a>
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+        <script src="../ace.js"></script>
+        <script src="../mode-rust.js"></script>
+        <script src="../editor.js"></script>
+        <script src="../theme-dawn.js"></script>
+        <script src="../theme-tomorrow_night.js"></script>
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="../theme/js/medium-zoom.min.js"></script>
+        <script src="../theme/js/image-zoom.js"></script>
+
+
+
+    </div>
+    </body>
+</html>
