@@ -39,5 +39,3 @@ editable = true
 
 [output.html.fold]
 enable = true
-
-[output.wordcount]
