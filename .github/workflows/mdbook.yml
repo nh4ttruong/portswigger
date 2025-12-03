@@ -45,7 +45,9 @@ jobs:
         run: cargo install mdbook-alerts
 
       - name: Build site with mdbook
-        run: mdbook build
+        run: |
+          echo "Running mdbook build with verbose output:"
+          mdbook build --verbose
         working-directory: ./book
 
       - name: Custom git_repository_edit_url
