@@ -7,6 +7,7 @@ gh-pages/
 !book/src/SUMMARY.md
 !book/src/introduction.md
 !book/src/contributors.md
+!book/theme
 
 # OS generated files
 .DS_Store
