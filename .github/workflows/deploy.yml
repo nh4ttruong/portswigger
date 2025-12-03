@@ -33,9 +33,6 @@ jobs:
           chmod +x scripts/sync_book.sh
           bash scripts/sync_book.sh
 
-      - name: Install cargo packages
-        run: cargo install mdbook-alerts
-
       - name: Build site with mdbook
         run: mdbook build
         working-directory: ./book
