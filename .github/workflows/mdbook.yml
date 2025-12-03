@@ -31,23 +31,11 @@ jobs:
           chmod +x scripts/sync_book.sh
           bash scripts/sync_book.sh
 
-      - name: Debug - Check theme files from book directory
-        run: |
-          echo "Current directory:"
-          pwd
-          echo "Checking theme from book dir:"
-          ls -la theme/ || echo "theme/ not found from here"
-          ls -la theme/css/ || echo "theme/css/ not found"
-          ls -la theme/js/ || echo "theme/js/ not found"
-        working-directory: ./book
-
-      - name: Install cargo packages
+      - name: Install mdbook-alerts
         run: cargo install mdbook-alerts
 
       - name: Build site with mdbook
-        run: |
-          echo "Running mdbook build with verbose output:"
-          mdbook build --verbose
+        run: mdbook build
         working-directory: ./book
 
       - name: Custom git_repository_edit_url

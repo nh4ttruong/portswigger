@@ -1,16 +1,23 @@
-# mdBook
+# mdBook build output
 book/src/*/
 book/html/
 gh-pages/
 
-# Keep these files in book/src
+# Keep these specific files in book/src
 !book/src/SUMMARY.md
 !book/src/introduction.md
 !book/src/contributors.md
-!book/theme
+
+# Keep theme directory
+!book/theme/
 
 # OS generated files
 .DS_Store
 ._*
 ehthumbs.db
 Thumbs.db
+
+# Rust/Cargo
+target/
+**/*.rs.bk
+Cargo.lock
