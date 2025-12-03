@@ -15,7 +15,6 @@ build-dir = "./"
 default-theme = "ayu"
 preferred-dark-theme = "ayu"
 git-repository-url = "https://github.com/nh4ttruong/portswigger"
-git-repository-icon = "fa-github"
 site-url = "/portswigger/"
 hash-files = true
 edit-url-template = "https://github.com/nh4ttruong/portswigger/edit/main/{path}"
