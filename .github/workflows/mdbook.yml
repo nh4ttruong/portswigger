@@ -31,6 +31,15 @@ jobs:
           chmod +x scripts/sync_book.sh
           bash scripts/sync_book.sh
 
+      - name: Debug - Check theme files
+        run: |
+          echo "Checking book/theme directory structure:"
+          ls -la book/theme/
+          echo "Checking CSS files:"
+          ls -la book/theme/css/ || echo "CSS directory not found"
+          echo "Checking JS files:"
+          ls -la book/theme/js/ || echo "JS directory not found"
+
       - name: Install cargo packages
         run: cargo install mdbook-alerts
 
