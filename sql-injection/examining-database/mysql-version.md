@@ -20,4 +20,4 @@ Tuy vậy, lúc đầu mình thử ký tự "#" thì server báo lỗi. Hên sao
 
 ## Kết quả
 
-![Solved](./sqli-examining-database/solved-mysql-version.jpg)
+![Solved](sqli-examining-database/solved-mysql-version.jpg)

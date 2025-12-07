@@ -22,4 +22,4 @@ UNION SELECT {string_can_tim},NULL,NULL--
 
 ## Kết quả
 
-![Solved SQLi finding column](./sqli-union-attack/solved-union-attack-finding-column.jpg)
+![Solved SQLi finding column](sqli-union-attack/solved-union-attack-finding-column.jpg)

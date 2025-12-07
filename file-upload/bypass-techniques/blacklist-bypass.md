@@ -2,7 +2,7 @@
 
 **Link:** [https://portswigger.net/web-security/file-upload/lab-file-upload-web-shell-upload-via-extension-blacklist-bypass](https://portswigger.net/web-security/file-upload/lab-file-upload-web-shell-upload-via-extension-blacklist-bypass)
 
-![Lab blacklist bypass](./blacklist-bypass/lab.jpg)
+![Lab blacklist bypass](blacklist-bypass/lab.jpg)
 
 ## Giới thiệu
 
@@ -16,7 +16,7 @@ Trong bài lab này, tác giả yêu cầu ta thực hiện bypass blacklist ext
 
 Đầu tiên, mình sẽ thử POST file 1.php lên server:
 
-![Thử gửi 1.php lên server](./blacklist-bypass/info-apache.jpg)
+![Thử gửi 1.php lên server](blacklist-bypass/info-apache.jpg)
 
 Kết quả trả về Burp Suite cho thấy, server sử dụng Apache2 và file của mình không lên upload lên vì server chặn tệp .php.
 
@@ -24,16 +24,16 @@ Kết quả trả về Burp Suite cho thấy, server sử dụng Apache2 và fil
 
 Như mình có đề cập, các dev có thể linh hoạt thêm vào tệp config (đối với Apache server) các loại tệp sẽ được "cho phép" thực thi trên server. Trong `htaccess`, mấy ông dev chỉ cần thêm dòng `AddType application/x-httpd-php {.extension_cần_thêm}`, server sẽ tự override nó vào `/etc/apache2/apache2.conf`. Lợi dụng điều này, ta sẽ sử dụng Burp Repeater để gửi đi 1 POST mới và gắn cái dòng AddType ở bên trên vào filename .htaccess:
 
-![Thêm .nh4ttruong extension cho file](./blacklist-bypass/addtype.jpg)
+![Thêm .nh4ttruong extension cho file](blacklist-bypass/addtype.jpg)
 
 Ta đã thành công gửi file .htaccess lên server. Trong request đó, bạn có thể thấy mình đã gửi request POST và thêm extension mới là .nh4ttruong vào .htaccess (tệp config). Bây giờ, ta thử POST 1 request mới lên server với extension mới:
 
-![Gửi RCE code webshell](./blacklist-bypass/send-rce.jpg)
+![Gửi RCE code webshell](blacklist-bypass/send-rce.jpg)
 
 Thành công rồi hehe, file đã lên được server, việc của ta bậy giờ là GET lại file đó thể thực thi nó:
 
-![GET bí mật của chú Carlos](./blacklist-bypass/lab.jpg)
+![GET bí mật của chú Carlos](blacklist-bypass/lab.jpg)
 
 Và submit bí mật của chú ấy thôi:
 
-![Submit](./blacklist-bypass/solved.jpg)
+![Submit](blacklist-bypass/solved.jpg)

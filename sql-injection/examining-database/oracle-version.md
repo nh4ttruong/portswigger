@@ -12,7 +12,7 @@ Database của lab này chính là Oracle và việc của ta là làm sao để
 
 Trong Oracle, built-in table có tên là dual, do vậy, ta có thể dò cột bằng cách gọi FROM đến bảng dual.
 
-![Dò cột bảng dual](./sqli-examining-database/call-dual-table.jpg)
+![Dò cột bảng dual](sqli-examining-database/call-dual-table.jpg)
 
 Đến đây, với [cheat sheet](https://portswigger.net/web-security/cheat-sheet), ta có thể biết được các câu query mẫu để lấy thông tin database. Từ đó, dễ dàng SQLi ở challenge này.
 
@@ -22,4 +22,4 @@ Trong Oracle, built-in table có tên là dual, do vậy, ta có thể dò cột
 
 ## Kết quả
 
-![Solved](./sqli-examining-database/solved-oracle-version.jpg)
+![Solved](sqli-examining-database/solved-oracle-version.jpg)

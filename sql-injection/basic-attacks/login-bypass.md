@@ -20,12 +20,12 @@ Như vậy, dựa vào cấu trúc của câu query như vậy, ta có thể d�
 
 Mình sẽ test thử cổng đăng nhập với `administrator:1 or 1=1--`. Tất nhiên là không thể login được. Mình sẽ sử dụng Burp để send request và kiểm tra payload của mình khi đăng nhập như thế nào. Sau khi kiểm tra, mình thấy được request khi login như sau:
 
-![Solved retriving hidden data](./basic-attack/test-query-login.jpg)
+![Solved retriving hidden data](basic-attack/test-query-login.jpg)
 
 Thử cách khác, vậy tại sao ta không thử bypass bằng cách ngăn server xác thực mật khẩu bằng cách nhét "--" vào sau **username**. Mình sẽ type trực tiếp vào ô username luôn và password có thể điền bất cứ gì cũng được:
 
-![Bypass login](./basic-attack/sqli-bypass-login.jpg)
+![Bypass login](basic-attack/sqli-bypass-login.jpg)
 
 ## Kết quả
 
-![Solved SQLi bypass login](./basic-attack/solved-sqli-bypass-login.jpg)
+![Solved SQLi bypass login](basic-attack/solved-sqli-bypass-login.jpg)

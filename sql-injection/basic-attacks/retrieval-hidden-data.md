@@ -18,4 +18,4 @@ SELECT * FROM products WHERE category = 'Clothing%2c+shoes+and+accessories' OR 1
 
 Sau "--" thì tất cả sẽ bị comment lại và không thể thực thi. Kết quả với câu query:
 
-![Solved retriving hidden data](./basic-attack/solved-retriving-data.jpg)
+![Solved retriving hidden data](basic-attack/solved-retriving-data.jpg)

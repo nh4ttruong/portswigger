@@ -2,27 +2,39 @@
 
 ## Lỗ hổng Cross-site Scripting (XSS)
 
-Cross-site scripting (XSS) là lỗ hổng cho phép attacker tương tác, phá phách ứng dụng web để có thể đánh lừa, phá vỡ các chính sách của website, tiến hành trích xuất dữ liệu người dùng, leo thang đặc quyền... bằng các đoạn script được truyền vào các tham số, các chức năng của website.
+Cross-site Scripting (XSS) là lỗ hổng cho phép attacker inject malicious scripts vào web pages được xem bởi users khác. Attacker có thể:
+- Đánh cắp session tokens, cookies
+- Thực hiện actions thay mặt victim
+- Đọc/modify nội dung trang web
+- Phishing và social engineering
 
 ![Cách XSS hoạt động](xss-work.png)
 
-Thông thường, để kiểm tra xem website có dính XSS hay không thì người ta thường dùng *alert()* để gọi website cảnh báo. Hiện nay, người ta dùng thêm *print()* để check XSS vuln.
+Thông thường, để kiểm tra XSS người ta dùng `alert()` hoặc `print()` để trigger popup.
 
 ## Các loại XSS
 
-XSS có rất nhiều loại, người ta gom nó thành 3 loại chính:
-- **Reflected XSS**: Truyền malicious script vào HTTP request.
-- **Stored XSS**: Liên quan đến Web database khi những malicious script có thể được attacker truyền vào các chức năng của website để tấn công.
-- **DOM-based XSS**: Liên quan đến lỗ hổng từ phía Client khi xử lý dữ liệu từ các input trên website.
+XSS được chia thành 3 loại chính:
 
-Để hiểu rõ hơn về XSS thì chúng ta sẽ bắt đầu các LAB về lỗ hổng này ^^
+### **Reflected XSS**
+Malicious script được truyền qua HTTP request và phản hồi ngay lập tức trong response. Không được lưu trữ.
 
-## Reflected XSS
+**Ví dụ:** `https://vulnerable.com/search?q=<script>alert(1)</script>`
 
-Khi một website có chức năng search và filter với URL như sau: `https://insecure-website.com/search?term=gift`. Nếu website dính Reflected XSS, attacker có thể lợi dụng để tấn công bằng cách truyền vào `term` parameter dạng: `https://insecure-website.com/search?term=<script>alert("Hehe website is hacked")</script>`. Điều này có nghĩa, attacker có thể thực hiện nhiều cách thức khác để tiến hành phá hoại hoặc tấn công website.
+### **Stored XSS** 
+Malicious script được lưu vào database và hiển thị cho mọi user truy cập. Nguy hiểm hơn Reflected XSS.
 
-### HTML Context Labs
+**Ví dụ:** Comment, profile bio, forum posts
 
+### **DOM-based XSS**
+Lỗ hổng xảy ra ở client-side khi JavaScript xử lý data không an toàn từ DOM sources (URL, localStorage, etc.)
+
+## Labs - Danh sách các bài thực hành
+
+### 1. Reflected XSS
+[Các lab về Reflected XSS](./reflected-xss/readme.md)
+
+#### HTML Context
 - [Reflected XSS with nothing encoded](./reflected-xss/html-context-nothing-encoded.md)
 - [Reflected XSS with most tags and attributes blocked](./reflected-xss/html-context-tags-blocked.md)
 - [Reflected XSS with all tags blocked except custom ones](./reflected-xss/html-context-custom-tags.md)
@@ -31,18 +43,45 @@ Khi một website có chức năng search và filter với URL như sau: `https:
 - [Reflected XSS with angle brackets HTML-encoded](./reflected-xss/angle-brackets-encoded.md)
 - [Reflected XSS in canonical link tag](./reflected-xss/canonical-link-tag.md)
 
-### JavaScript Context Labs
-
+#### JavaScript Context
 - [Reflected XSS with single quote and backslash escaped](./reflected-xss/js-single-quote-escaped.md)
 - [Reflected XSS with angle brackets encoded](./reflected-xss/js-angle-brackets-encoded.md)
 - [Reflected XSS with all encoded and escaped](./reflected-xss/js-all-encoded-escaped.md)
 
-## Stored XSS
+### 2. Stored XSS
+[Các lab về Stored XSS](./stored-xss/readme.md)
 
-[Mình sẽ ghi chép lại LAB phần này tại đây ^^](./stored-xss/readme.md)
+*Coming soon...*
 
-(Spoiler: Phần này đang "stored" trong đầu tác giả, chưa "XSS" ra ngoài được 😂)
+### 3. DOM-based XSS
+*Coming soon...*
 
-## DOM-based XSS
+## Cách phòng chống XSS
 
-*Coming soon... (thực sự là "coming soon" chứ không phải "coming never" đâu nhé!)*
+### Input Validation & Output Encoding
+- **Encode output**: HTML encode `< > " ' &` khi hiển thị user input
+- **Context-aware encoding**: HTML context khác JavaScript context khác URL context
+- **Validate input**: Whitelist allowed characters
+- **Sanitize HTML**: Nếu cho phép HTML, dùng library như DOMPurify
+
+### Content Security Policy (CSP)
+Sử dụng CSP headers để restrict nguồn scripts có thể chạy:
+```
+Content-Security-Policy: script-src 'self' https://trusted.cdn.com
+```
+
+### HTTPOnly & Secure Cookies
+- Set `HttpOnly` flag để JavaScript không đọc được cookies
+- Set `Secure` flag để cookies chỉ gửi qua HTTPS
+
+### Framework Protection
+Modern frameworks như React, Angular, Vue tự động escape output. Tuy nhiên vẫn cần cẩn thận với:
+- `dangerouslySetInnerHTML` (React)
+- `bypassSecurityTrustHtml` (Angular)
+- `v-html` (Vue)
+
+## Tài nguyên tham khảo
+
+- [PortSwigger XSS Guide](https://portswigger.net/web-security/cross-site-scripting)
+- [OWASP XSS Prevention Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Cross_Site_Scripting_Prevention_Cheat_Sheet.html)
+- [XSS Filter Evasion Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/XSS_Filter_Evasion_Cheat_Sheet.html)

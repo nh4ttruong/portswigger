@@ -2,7 +2,7 @@
 
 **Link:** [https://portswigger.net/web-security/file-upload/lab-file-upload-web-shell-upload-via-race-condition](https://portswigger.net/web-security/file-upload/lab-file-upload-web-shell-upload-via-race-condition)
 
-![Lab](./race-condition/lab.jpg)
+![Lab](race-condition/lab.jpg)
 
 ## Giới thiệu
 
@@ -16,11 +16,11 @@ Vỏ quýt dày có móng tay nhọn. Đó là câu mà ông cha ta đã dạy, 
 
 Ta thực hiện các bước tương tự như các lab ở trên thì thấy hệ thống không cho phép ta upload 1.php lên:
 
-![Thử upload 1.php](./race-condition/error.jpg)
+![Thử upload 1.php](race-condition/error.jpg)
 
 Thử đổi file thành `hehe.php.png` và upload lên hệ thống thì có hệ thống đã cho phép tải RCE code lên nhưng dưới extension PNG :3
 
-![Đổi thành hehe.php.png](./race-condition/changefile.jpg)
+![Đổi thành hehe.php.png](race-condition/changefile.jpg)
 
 ## Khai thác
 
@@ -28,7 +28,7 @@ Sau đó, sử dụng tiện ích [Turbo Intruder](https://portswigger.net/bapps
 
 Trong HTTP History, ta tìm kiếm request mà đã upload thành công hehe.php.png, sau đó chuột phải -> Extensions -> Turbo Intruders -> Send to Turbo Intruder:
 
-![Gửi qua Turbo Intruders](./race-condition/sendtoturbo.jpg)
+![Gửi qua Turbo Intruders](race-condition/sendtoturbo.jpg)
 
 Tiếp theo, ta sử dụng [đoạn code dưới đây](./race-condition/turbo-sample.py) và thay đổi `<YOUR-POST-REQUEST>` thành request POST đã gửi thành công file hehe.php.png, thay đổi `<YOUR-GET-REQUEST>` thành request đến `/files/avatars/hehe.php.png`. Đại loại thì đoạn code này sẽ giúp cho request của ta được tồn tại lâu hơn và tệp hehe.php (sau khi bỏ .png ở các request thay đổi) có thể thực thi trên server:
 
@@ -60,8 +60,8 @@ def handleResponse(req, interesting):
 
 Bây giờ, ta đã config xong xuôi thì bấm Attack và chờ đợi timeout 60s:
 
-![Nhấn attack thôi](./race-condition/bypass.jpg)
+![Nhấn attack thôi](race-condition/bypass.jpg)
 
 Ở các request, ta có thể tìm kiếm được bí mật của chú Carlos và submit thôi:
 
-![Submit](./race-condition/solved.jpg)
+![Submit](race-condition/solved.jpg)

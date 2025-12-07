@@ -12,4 +12,4 @@ Payload: `https://ac391ffa1e25ddc4c0e95d60001300d6.web-security-academy.net/filt
 
 ## Kết quả
 
-![Solved SQLi union attack with null value](./sqli-union-attack/solved-union-attack-null-value.jpg)
+![Solved SQLi union attack with null value](sqli-union-attack/solved-union-attack-null-value.jpg)
