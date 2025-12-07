@@ -6,6 +6,8 @@ directories=(
     "oauth"
     "sql-injection"
     "xss"
+    "README.md"
+    "portswigger-lab.png"
 )
 
 cd $(git rev-parse --show-toplevel)
