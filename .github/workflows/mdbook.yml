@@ -22,9 +22,9 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Set up mdBook
-        uses: peaceiris/actions-mdbook@v1
+        uses: peaceiris/actions-mdbook@v2
         with:
-          mdbook-version: 'latest'
+          mdbook-version: 'v0.4.40'
 
       - name: Sync sources
         run: |
